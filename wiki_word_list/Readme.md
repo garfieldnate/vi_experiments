@@ -6,7 +6,7 @@ A first attempt to create a Vietnamese high frequency word list, using the Vietn
 
 Utilized software:
 
-* Python, Perl
+* Python 2 or 3, Perl 5.18+
 * [Wikiextractor]
 * [jq](https://stedolan.github.io/jq/)
 * [JVnTextPro](http://jvntextpro.sourceforge.net/)
@@ -22,9 +22,9 @@ We remove template expansion because we do not want to bias word frequency with 
 
 3. Run sentence segmentation and word tokenization. Run `jvntextpro.JVnTextProTest` with the following arguments (replace the two directory names as appropriate; JVnTextPro comes with a models directory): `-senseg -wordseg -modeldir JVnTextPro/models -input YOUR/TEXT/DIRECTORY`. This will create one .txt.pro file for each of the original .txt files.
 
-4. Normalize the words and count occurrences:
+4. Normalize the words and count occurrences using the included scripts:
 
-    cat YOUR/TEXT/DIRECTORY/*.txt.pro | perl -mfeature=fc -ne 'print fc($_)' | tr ' ' "\n" | perl -ne 'chomp; $hash{$_}++; END {foreach (sort {$hash{$b} <=> $hash{$a}} keys %hash) {print "$_\t$hash{$_}\n"};}' > wikipedia_unigrams.txt
+    cat YOUR/TEXT/DIRECTORY/viwikidump/jvntok_seg/*.txt.pro | perl clean_text.pl | perl count_words.pl > wikipedia_unigrams.txt
 
 The resulting wikipedia_unigrams.txt has been added to this repository.
 
