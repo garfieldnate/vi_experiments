@@ -7,12 +7,13 @@ use open qw(:std :utf8);
 my %index;
 while(my $line = <>) {
     $line =~ s/[\r\n]//g;
-    my @words = split /\s/, $line;
+    my @words = split /\s+/, $line;
     for my $word(@words) {
         $index{$word}++;
     }
 }
 
+my $total = 0;
 for my $word (sort {$index{$b} <=> $index{$a}} keys %index) {
     my $frequency = $index{$word};
     # JVnTextPro used _ to join words; fix that here
@@ -20,5 +21,8 @@ for my $word (sort {$index{$b} <=> $index{$a}} keys %index) {
     if(!$word) {
         next;
     }
+    $total += $frequency;
     say "$word\t$frequency";
 }
+
+print STDERR "Total words: $total";

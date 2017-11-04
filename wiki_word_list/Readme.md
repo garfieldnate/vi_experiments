@@ -20,15 +20,22 @@ Steps:
 
 We remove template expansion because we do not want to bias word frequency with repeated template text. We add section headers (I figured they might be relevant). We also filter disambiguation pages. `jq` is used to extract just the text from WikiExtractor's JSON output, and then `sed` is used to remove empty lines. Finally, `split` pipes the output in 1-10M chunks to several files so that they are easier to inspect in a text editor. This is not strictly necessary.
 
-3. Run sentence segmentation and word tokenization. Run `jvntextpro.JVnTextProTest` with the following arguments (replace the two directory names as appropriate; JVnTextPro comes with a models directory): `-senseg -wordseg -modeldir JVnTextPro/models -input YOUR/TEXT/DIRECTORY`. This will create one .txt.pro file for each of the original .txt files.
+3. Rename files to have the `.txt` extension, which is necessary for JVnTextPro in the next step.
 
-4. Normalize the words and count occurrences using the included scripts:
+    rename 's/$/.txt/' YOUR/TEXT/DIRECTORY/*
+
+4. Run sentence segmentation and word tokenization. Run `jvntextpro.JVnTextProTest` with the following arguments (replace the two directory names as appropriate; JVnTextPro comes with a models directory): `-senseg -wordseg -modeldir JVnTextPro/models -input YOUR/TEXT/DIRECTORY`. This will create one .txt.pro file for each of the original .txt files.
+
+5. Normalize the words and count occurrences using the included scripts:
 
     cat YOUR/TEXT/DIRECTORY/viwikidump/jvntok_seg/*.txt.pro | perl clean_text.pl | perl count_words.pl > wikipedia_unigrams.txt
 
-The resulting wikipedia_unigrams.txt has been added to this repository.
+The resulting wikipedia_unigrams.txt has been added to this repository. The file is not perfectly clean, and there are still some junk entries, especially mathematical symbols like a superscript 2, etc.
 
-## Possible Improvments, Future Work
+Total tokens: 88,883,030
+Total types:  1,145,157
+
+## Possible Improvements, Future Work
 
 I ran tokenization with Roy_A's work [here](https://github.com/roy-a/Roy_VnTokenizer), but the result was unsatisfactory (proper nouns combined with their adjectives, periods combined with following words, etc.). I did some editing to the file to try to make it faster, so it is possible that I messed it up somehow, especially considering that Roy reports very high accuracy.
 
