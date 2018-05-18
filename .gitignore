@@ -1,1 +1,5 @@
 opensubs_word_list/subtitles
+**/viwiki-latest*
+web_corpus/wiki_keywords/expanded
+web_corpus/wiki_keywords/vendor
+web_corpus/wiki_keywords/*.txt

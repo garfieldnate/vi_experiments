@@ -7,18 +7,18 @@ A first attempt to create a Vietnamese high frequency word list, using the Vietn
 Utilized software:
 
 * Python 2 or 3, Perl 5.18+
-* [Wikiextractor]
+* [Wikiextractor](https://github.com/attardi/wikiextractor)
 * [jq](https://stedolan.github.io/jq/)
 * [JVnTextPro](http://jvntextpro.sourceforge.net/)
 
 Steps:
 
 1. Download the latest Vietnamese Wikipedia article dump here: Downloading the VI Wikipedia dump here: http://dumps.wikimedia.org/viwiki/latest/viwiki-latest-pages-articles.xml.bz2.
-2. Run the following command to extract the articles into ~100 .txt files (replace YOUR/TEXT/DIRECTORY with the desired file location):
+2. Run the following command to extract the articles into ~100 .txt files (replace YOUR/TEXT/DIRECTORY/ with the desired file location):
 
-    python WikiExtractor.py --json --no-templates --sections --output - --filter_disambig_pages viwiki-latest-pages-articles.xml.bz2 | jq --raw-output .text | sed  '/^$/d' | split -l 30000 - YOUR/TEXT/DIRECTORY
+    python WikiExtractor.py --json --no-templates --sections --output - --filter_disambig_pages viwiki-latest-pages-articles.xml.bz2 | jq --raw-output .text | sed  '/^$/d' | split -l 30000 - YOUR/TEXT/DIRECTORY/
 
-We remove template expansion because we do not want to bias word frequency with repeated template text. We add section headers (I figured they might be relevant). We also filter disambiguation pages. `jq` is used to extract just the text from WikiExtractor's JSON output, and then `sed` is used to remove empty lines. Finally, `split` pipes the output in 1-10M chunks to several files so that they are easier to inspect in a text editor. This is not strictly necessary.
+The trailing slash on `YOUR/TEXT/DIRECTORY/` is important! We remove template expansion because we do not want to bias word frequency with repeated template text. We add section headers (I figured they might be relevant). We also filter disambiguation pages. `jq` is used to extract just the text from WikiExtractor's JSON output, and then `sed` is used to remove empty lines. Finally, `split` pipes the output in 1-10M chunks to several files so that they are easier to inspect in a text editor. This is not strictly necessary.
 
 3. Rename files to have the `.txt` extension, which is necessary for JVnTextPro in the next step.
 
