@@ -9,9 +9,8 @@ def get_random_tuple(seeds, order=3):
     picked = set()
     seed = random.choice(seeds)
     for _ in range(order):
-        while seed in picked and len(picked) < order:
-            seed = random.choice(seeds)
-        picked.add(seed)
+        while len(picked) < order:
+            picked.add(random.choice(seeds))
 
     sorted_tuple = list(picked)
     sorted_tuple.sort()
